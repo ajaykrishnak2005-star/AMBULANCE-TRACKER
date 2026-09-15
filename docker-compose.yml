@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  postgresql:
+    image: postgres:15-alpine
+    container_name: ambulance_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+      POSTGRES_DB: ambulance_tracker
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ambulance_api
+    depends_on:
+      - postgresql
+    environment:
+      - DATABASE_URL=postgresql+psycopg2://postgres:postgrespassword@postgresql:5432/ambulance_tracker
+      - JWT_SECRET_KEY=emergency-ambulance-tracker-production-secret-key-32bytes!
+      - JWT_REFRESH_SECRET=emergency-ambulance-tracker-refresh-secret-key-32bytes!
+      - FRONTEND_URL=http://localhost:5173
+      - BACKEND_URL=http://localhost:8000
+      - ENVIRONMENT=production
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: ambulance_web
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

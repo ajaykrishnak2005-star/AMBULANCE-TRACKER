@@ -1,0 +1,19 @@
+{
+  "name": "Ambulance Tracker - AI Emergency Discovery",
+  "short_name": "AmbulanceTracker",
+  "description": "AI-Powered Emergency Ambulance Discovery and Immediate Calling Platform",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0e17",
+  "theme_color": "#dc2626",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/ambulance-icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["medical", "health", "utilities"]
+}
